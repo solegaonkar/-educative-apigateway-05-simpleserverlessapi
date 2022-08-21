@@ -1,4 +1,3 @@
-
 AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   DeployId:
@@ -23,9 +22,9 @@ Resources:
       MemorySize: 128
   RestAPI:
     Type: AWS::ApiGateway::RestApi
-    Properties: 
-      EndpointConfiguration: 
-        Types: 
+    Properties:
+      EndpointConfiguration:
+        Types:
           - REGIONAL
       Body:
         openapi: "3.0.1"
@@ -64,7 +63,7 @@ Resources:
   CounterDB:
     Type: AWS::DynamoDB::Table
     Properties:
-      BillingMode: PAY_PER_REQUEST 
+      BillingMode: PAY_PER_REQUEST
       TableName: CounterDB
       AttributeDefinitions:
         - AttributeName: id
@@ -113,3 +112,9 @@ Resources:
                   - dynamodb:UpdateItem
                   - dynamodb:PutItem
                 Resource: !GetAtt CounterDB.Arn
+  APIDeployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId:
+        Ref: RestAPI
+      StageName: v1

@@ -8,6 +8,16 @@ aws configure set aws_secret_access_key $SECRET_ACCESS_KEY
 aws configure set region us-east-1
 
 # -----------------------------------------------------------------
+# Open CloudFormation in the AWS Console 
+# 1. Check for a Stack named EducativeCourseApiGateway
+# 2. If there is such a stack, created in a previous lesson,
+#    delete it by clicking on the Delete button
+# 3. Wait for some time till it is deleted completely then press 
+#    Enter to resume this script
+# -----------------------------------------------------------------
+read a
+
+# -----------------------------------------------------------------
 # Deploying a Lambda Function requires two steps.
 # -----------------------------------------------------------------
 # 1. Create a deployment ZIP file and upload it to S3
@@ -57,16 +67,6 @@ aws cloudformation deploy \
 # -----------------------------------------------------------------
 apiId=`aws cloudformation list-stack-resources --stack-name EducativeCourseApiGateway | jq -r ".StackResourceSummaries[3].PhysicalResourceId"`
 echo "API ID: $apiId"
-
-# -----------------------------------------------------------------
-# Deploy the API to a new Stage (We will discuss this in detail in a later chapter)
-# -----------------------------------------------------------------
-aws apigateway create-deployment --rest-api-id $apiId --stage-name v1 --description 'Deployed from CLI' 
-
-# -----------------------------------------------------------------
-# Give it some time to settle down
-# -----------------------------------------------------------------
-sleep 30
 
 # -----------------------------------------------------------------
 # This is the URL for the API we just created
